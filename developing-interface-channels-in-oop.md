@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > Developing Interface Channels in OOP Style
+
 # Developing Interface Channels in OOP Style
 
 We have strived to make developing interface channels as easy as possible. The goals is to make it so that you can create a channel in a few minutes and have it running immediately in test environment and then deploy it to a production environment with minimal effort.
@@ -5,6 +7,46 @@ We have strived to make developing interface channels as easy as possible. The g
 > Create Interface Channels in Minutes not Hours nor Weeks!
 
 The gofer Engine class has methods to quicly and easily create and run channel configuration scripts. The default export is already an instance of the class, so you can just start using it immediately.
+
+- [listen](#listen)
+- [IngestionClass](#ingestionclass)
+  - [`name`](#name)
+  - [`id`](#id)
+  - [`ack`](#ack)
+  - [`filter`](#filter)
+  - [`transform`](#transform)
+  - [`store`](#store)
+  - [`setVar`](#setvar)
+  - [`setMsgVar`](#setmsgvar)
+  - [`setChannelVar`](#setchannelvar)
+  - [`setGlobalVar`](#setglobalvar)
+  - [`getVar`](#getvar)
+  - [`getMsgVar`](#getmsgvar)
+  - [`getChannelVar`](#getchannelvar)
+  - [`getGlobalVar`](#getglobalvar)
+  - [`route`](#route)
+  - [`routes`](#routes)
+[RouteClass](#routeclass)
+  - `name` see [`IngestionClass.name`](#name)
+  - `id` see [`IngestionClass.id`](#id)
+  - `filter` see [`IngestionClass.filter`](#filter)
+  - `transform` see [`IngestionClass.transform`](#transform)
+  - `store` see [`IngestionClass.store`](#store)
+  - `setVar` see [`IngestionClass.setVar`](#setvar)
+  - `setMsgVar` see [`IngestionClass.setMsgVar`](#setmsgvar)
+  - [`setRouteVar`](#setroutevar)
+  - `setChannelVar` see [`IngestionClass.setChannelVar`](#setchannelvar)
+  - `setGlobalVar` see [`IngestionClass.setGlobalVar`](#setglobalvar)
+  - `getVar` see [`IngestionClass.getVar`](#getvar)
+  - `getMsgVar` see [`IngestionClass.getMsgVar`](#getmsgvar)
+  - [`getRouteVar`](#setroutevar)
+  - `getChannelVar` see [`IngestionClass.getChannelVar`](#getchannelvar)
+  - `getGlobalVar` see [`IngestionClass.getGlobalVar`](#getglobalvar)
+  - [`send`](#send)
+[CompleteClass](#completeclass)
+  - [`run`](#run)
+  - [`export`](#export)
+  - (FUTURE) [`msg`](#msg)
 
 ## listen
 
@@ -25,7 +67,9 @@ const ingest = gofer.listen('tcp', 'localhost', 5501)
 // we will continue building upon this snippet
 ```
 
-The `listen` method returns an [`IngestionClass`](#ingestionclass). 
+The `listen` method returns an [`IngestionClass`](#ingestionclass).
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ## IngestionClass
 
@@ -44,6 +88,8 @@ type name = (name: string) => IngestionClass
 ingest.name('A Unique Channel Name')
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### id
 
 Call the `id` method to override the generated id given to the channel. If not provided the id will be a UUID
@@ -57,6 +103,8 @@ type id = (id: string | number) => IngestionClass
 ingest.id(42)
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### ack
 
 Call the `ack` method to reply back an HL7 acknowledgement. See [Acknowledge Config](./channel-workflows/ack.md)
@@ -69,6 +117,8 @@ type ack = (ack?: AckConfig) => IngestionClass
 // example.ts (continued)
 ingest.ack()
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### filter
 
@@ -91,6 +141,8 @@ ingest.filter((msg) =>
     .toString() === 'ADT'
 )
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
  
 ### transform
 
@@ -104,6 +156,8 @@ type transform = (transform: TransformFlow<'F'>) = > IngestionClass
 // example.ts (continued)
 ingest.transform((msg) => msg.set('MSH-5'), 'Gofer')
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
  
 ### store
 
@@ -117,6 +171,8 @@ type store = (store: StoreConfig) => IngestionClass
 // example.ts (continued)
 ingest.store({ file: {} })
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setVar
 
@@ -137,6 +193,8 @@ ingest.setVar('Channel', 'facility', (msg) => msg.get('MSH-3.1'))
 ingest.setVar<{ bar: string }>('Global', 'foo', { bar: 'baz' })
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### setMsgVar
  
 Call the `setMsgVar` method to set a variable value for the Message scope. Later in this message will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
@@ -149,6 +207,8 @@ type setMsgVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMessag
 // example.ts (continued)
 ingest.setMsgVar('name', 'FirstName')
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setChannelVar
  
@@ -163,6 +223,8 @@ type setChannelVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMe
 ingest.setChannelVar('facility', msg => msg.get('MSH-3.1'))
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### setGlobalVar
 
 Call the `setGlobalVar` method to set a variable value for the Global scope. Anywhere later in current or following messages within this same server will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
@@ -175,6 +237,8 @@ type setGlobalVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMes
 // example.ts (continued)
 ingest.setGlobalVar('foo', { bar: 'baz' })
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### getVar
 
@@ -193,6 +257,8 @@ type getVar = <V>(scope: 'Msg' | 'Channel' | 'Global', varName: string, cb: (val
 ingest.getVar('Msg', 'name', (name) => console.log(name))
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### getMsgVar
 
 Call the `getMsgVar` method to get a previously set variable for the Msg scope.
@@ -207,6 +273,8 @@ type getMsgVar = <V>(varName: string, cb: (val: V | undefined, msg: Msg, context
 // example.ts (continued)
 ingest.getMsgVar<string>('name', (name, msg) => msg.set('PID-5.2', name))
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### getChannelVar
 
@@ -225,6 +293,8 @@ ingest.getChannelVar<string>('facility', (facility, _, { logger }) => {
 })
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### getGlobalVar
 
 Call the `getGlobalVar` method to get a previously set variable for the Channel scope
@@ -240,6 +310,8 @@ type getGlobalVar = <V>(varName: string, cb: (val: V | undefined, msg: Msg, cont
 ingest.getGlobalVar<{ bar: string }>('foo', ({ bar }) => bar === 'foo')
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### route
 
 Call the `route` method to route the message to a _single_ destination. This method returns an instance of [`CompleteClass`](#completeclass).
@@ -254,6 +326,8 @@ type route = (route: (route: RouteClass) => RouteClass) => CompleteClass
 // example.ts (continued)
 const comp = ingest.route(route => route.send('tcp', 'localhost', 5502))
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### routes
 
@@ -279,6 +353,8 @@ const comp = ingest.routes(route => [
 ])
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ## RouteClass
 
 The RouteClass has all of the above methods of the [`IngestionClass`](#ingestionclass) excluding `ack`, `route`, and `routes`. The `setVar` and `getVar` has the additional scope `"Route"`, and the RouteClass has these additional methods:
@@ -296,6 +372,8 @@ type setRouteVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMess
 route.setRouteVar('example', 'test')
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### getRouteVar
 
 Call the `getRouteVar` method to get a variable within the scope of the current route. 
@@ -308,6 +386,8 @@ type getRouteVar = <V>(varName: string, cb: (val: V, msg: Msg, context: IMessage
 // example.ts (continued)
 route.getRouteVar('example', (test) => console.log(test))
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### send
 
@@ -324,6 +404,8 @@ route.send('tcp', 'localhost', 5505)
 
 _**NOTE**: Currently only TCP clients are supported. In a future release there will be additional methods to senders, writers, and callback messages._
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ## CompleteClass
 
 The `CompleteClass` is returned by both the `route` and `routes` methods of the `IngestionClass`. This class currently has the following methods:
@@ -337,6 +419,8 @@ Call the `run` method to start the channel on the server. This method does not s
 comp.run()
 ```
 
+_[Back to top](#developing-interface-channels-in-oop-style)_
+
 ### export
 
 Call the `export` method to export the `ChannelConfig` JSON script created. This method does not support any arguments
@@ -345,6 +429,8 @@ Call the `export` method to export the `ChannelConfig` JSON script created. This
 // example.ts (continued)
 comp.export()
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### msg
 
@@ -363,3 +449,5 @@ comp.msg((m) => {
   msg = m.toString()
 })
 ```
+
+_[Back to top](#developing-interface-channels-in-oop-style)_
