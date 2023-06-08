@@ -1,4 +1,4 @@
-[🏠 Gofer Engine](https://gofer-engine.github.io/)
+[🏠 Gofer Engine](./index.md)
 
 # Introducing Gofer Engine
 

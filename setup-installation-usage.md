@@ -1,4 +1,6 @@
-# Setup, Installation, and Usage of the [Gofer Engine](./index.md)
+[🏠 Gofer Engine](./index.md) > Setup, Installation, and Usage
+
+# Setup, Installation, and Usage
 
 I find it helpful to newer developers to have a setp-by-step guide to get them started. If you are experienced already with Node projects, you can skip to the [Installation](#installation) section.
 

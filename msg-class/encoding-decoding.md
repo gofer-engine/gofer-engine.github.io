@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > [Msg Class](./index.md) > Decoding
+
 ### Decoding
 
 HL7 messages can be decoded by simply passing the raw string message to the `Msg` constructor:

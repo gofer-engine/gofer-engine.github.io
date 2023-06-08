@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > [Msg Class](./index.md) > Extrapolating
+
 ### Extrapolating
 
 HL7 uses paths to reference data inside of the HL7 message structure. The path is a string that is a combination of the segment name, segment iteration index, field index, field iteration index, component index, and subcomponent index. Iteration indexes are surrounded by brackets (`[...]`). The other path parts are separated by either a period (`.`) or dash (`-`). The path is 1-indexed, meaning the first segment iteration is `1`, the first field is `1`, the first field iteration is `1`, the first component is `1`, and the first subcomponent is `1`. The segment name is 3 upper case characters. A path can be specific down to the subcomponent level with optional iteration indexes, or can be as general as just the segment name. The following are all valid paths (_may not be valid HL7 schemed messages)):

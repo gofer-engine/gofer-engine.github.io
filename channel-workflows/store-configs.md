@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > [Channel Workflows](./index.md) > Store Configs
+
 ## Store Configs
 
 Store Configs are used to persist messages to supported stores. The interface `StoreConfig` is currently defined as:

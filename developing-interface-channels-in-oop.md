@@ -1,4 +1,4 @@
-[🏠 Gofer Engine](https://gofer-engine.github.io/) > Developing Interface Channels in OOP Style
+[🏠 Gofer Engine](./index.md) > Developing Interface Channels in OOP Style
 
 # Developing Interface Channels in OOP Style
 
@@ -26,7 +26,7 @@ The gofer Engine class has methods to quicly and easily create and run channel c
   - [`getGlobalVar`](#getglobalvar)
   - [`route`](#route)
   - [`routes`](#routes)
-[RouteClass](#routeclass)
+- [RouteClass](#routeclass)
   - `name` see [`IngestionClass.name`](#name)
   - `id` see [`IngestionClass.id`](#id)
   - `filter` see [`IngestionClass.filter`](#filter)
@@ -43,7 +43,7 @@ The gofer Engine class has methods to quicly and easily create and run channel c
   - `getChannelVar` see [`IngestionClass.getChannelVar`](#getchannelvar)
   - `getGlobalVar` see [`IngestionClass.getGlobalVar`](#getglobalvar)
   - [`send`](#send)
-[CompleteClass](#completeclass)
+- [CompleteClass](#completeclass)
   - [`run`](#run)
   - [`export`](#export)
   - (FUTURE) [`msg`](#msg)
@@ -83,6 +83,7 @@ Call the `name` method to name the channel
 // definition
 type name = (name: string) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.name('A Unique Channel Name')
@@ -98,6 +99,7 @@ Call the `id` method to override the generated id given to the channel. If not p
 // definition
 type id = (id: string | number) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.id(42)
@@ -113,6 +115,7 @@ Call the `ack` method to reply back an HL7 acknowledgement. See [Acknowledge Con
 // definition
 type ack = (ack?: AckConfig) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.ack()
@@ -128,6 +131,7 @@ Call the `filter` method to filter the message. See [Filter Flow](./channel-work
 // definition
 type filter = (filter: FilterFlow<'F'>) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.filter((msg) => msg.get('MSH-9.1') === "ADT")
@@ -143,7 +147,7 @@ ingest.filter((msg) =>
 ```
 
 _[Back to top](#developing-interface-channels-in-oop-style)_
- 
+
 ### transform
 
 Call the `transform` method to transform/modify the message. See [Transform Flow](./channel-workflows/transforming.md) for the function definition
@@ -152,13 +156,14 @@ Call the `transform` method to transform/modify the message. See [Transform Flow
 // definition
 type transform = (transform: TransformFlow<'F'>) = > IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.transform((msg) => msg.set('MSH-5'), 'Gofer')
 ```
 
 _[Back to top](#developing-interface-channels-in-oop-style)_
- 
+
 ### store
 
 Call the `store` method to persist the message to a data store. See [Store Config](./channel-workflows/store-configs.md) for the config definition
@@ -167,6 +172,7 @@ Call the `store` method to persist the message to a data store. See [Store Confi
 // definition
 type store = (store: StoreConfig) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.store({ file: {} })
@@ -182,6 +188,7 @@ Call the `setVar` method to set a variable value for the specific scope. The var
 // definition
 type setVar = <V>(scope: 'Msg' | 'Channel' | 'Global', varName: string, varValue: V | (msg: Msg, context?: IMessageContext) => V) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.setVar('Msg', 'name', 'FirstName')
@@ -196,13 +203,14 @@ ingest.setVar<{ bar: string }>('Global', 'foo', { bar: 'baz' })
 _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setMsgVar
- 
+
 Call the `setMsgVar` method to set a variable value for the Message scope. Later in this message will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
 
 ```typescript
 // definition
 type setMsgVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMessageContext) => V) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.setMsgVar('name', 'FirstName')
@@ -211,13 +219,14 @@ ingest.setMsgVar('name', 'FirstName')
 _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setChannelVar
- 
+
 Call the `setChannelVar` method to set a variable value for the Channel scope. Later in this message or following messages within this same channel will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
 
 ```typescript
 // definition
 type setChannelVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMessageContext) => V) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.setChannelVar('facility', msg => msg.get('MSH-3.1'))
@@ -233,6 +242,7 @@ Call the `setGlobalVar` method to set a variable value for the Global scope. Any
 // definition
 type setGlobalVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMessageContext) => V) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.setGlobalVar('foo', { bar: 'baz' })
@@ -252,6 +262,7 @@ Call the `getVar` method to get a previously set variable for the given scope by
 // definition
 type getVar = <V>(scope: 'Msg' | 'Channel' | 'Global', varName: string, cb: (val: V | undefined, msg: Msg, context: IMessageContext) => void | Msg | boolean) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.getVar('Msg', 'name', (name) => console.log(name))
@@ -269,6 +280,7 @@ For example, you can use the value to transform the message
 // definition
 type getMsgVar = <V>(varName: string, cb: (val: V | undefined, msg: Msg, context: IMessageContext) => void | Msg | boolean) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.getMsgVar<string>('name', (name, msg) => msg.set('PID-5.2', name))
@@ -286,6 +298,7 @@ For example, you can use the value and the context to log a message
 // definition
 type getChannelVar = <V>(varName: string, cb: (val: V | undefined, msg: Msg, context: IMessageContext) => void | Msg | boolean) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.getChannelVar<string>('facility', (facility, _, { logger }) => {
@@ -305,6 +318,7 @@ For example, you can use the value and filter the message by returning false
 // definition
 type getGlobalVar = <V>(varName: string, cb: (val: V | undefined, msg: Msg, context: IMessageContext) => void | Msg | boolean) => IngestionClass
 ```
+
 ```typescript
 // example.ts (continued)
 ingest.getGlobalVar<{ bar: string }>('foo', ({ bar }) => bar === 'foo')
@@ -322,6 +336,7 @@ The argument to the route is a function that provides an instance of `RouteClass
 // definition
 type route = (route: (route: RouteClass) => RouteClass) => CompleteClass
 ```
+
 ```typescript
 // example.ts (continued)
 const comp = ingest.route(route => route.send('tcp', 'localhost', 5502))
@@ -341,6 +356,7 @@ Notice that each array begins by calling the `route` function. This is different
 // definition
 type routes = (routes: (route: () => RouteClass) => RouteClass[]) => CompleteClass
 ```
+
 ```typescript
 // example.ts (continued)
 const comp = ingest.routes(route => [
@@ -367,6 +383,7 @@ Call the `setRouteVar` method to set a variable within the scope of the current 
 // definition
 type setRouteVar = <V>(varName: string, varValue: V | (msg: Msg, context?: IMessageContext) => V) => RouteClass
 ```
+
 ```typescript
 // example.ts (continued)
 route.setRouteVar('example', 'test')
@@ -382,6 +399,7 @@ Call the `getRouteVar` method to get a variable within the scope of the current 
 // definition
 type getRouteVar = <V>(varName: string, cb: (val: V, msg: Msg, context: IMessageContext) => void | Msg | boolean) => RouteClass
 ```
+
 ```typescript
 // example.ts (continued)
 route.getRouteVar('example', (test) => console.log(test))
@@ -397,6 +415,7 @@ Call the `send` method to get a variable within the scope of the current route.
 // definition
 type send = (method: 'tcp', host: string, port: number) => RouteClass
 ```
+
 ```typescript
 // example.ts (continued)
 route.send('tcp', 'localhost', 5505)
@@ -442,6 +461,7 @@ _**NOTE**: This will be used in a future releast with non listening channel conf
 // definition
 type msg = (callback: (msg: Msg, context: IMessageContext) => void) => void
 ```
+
 ```typescript
 // example.ts (continued)
 let msg: string | undefined

@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > [Channel Workflows](./index.md) > Queuing
+
 ## Queuing
 
 Queuing is useful for when you need to allow retries or throttle the number of messages being processed at a time. The Queue can be configured in three different places in a channel config.

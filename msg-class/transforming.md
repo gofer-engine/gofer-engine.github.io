@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > [Msg Class](./index.md) > Transforming
+
 ## Transforming
 
 You can use the following methods to transform the message. Each method returns the self class instance, so you can chain the methods together as needed.
@@ -152,7 +154,7 @@ msg.setIteration('LAN-1', ['A', 'B', 'C'])
 
 The Transformer functions return the class itself allowing for the transformers to be chained in sequence.
 
-```
+```ts
 msg
   .transform({
     restrict: {

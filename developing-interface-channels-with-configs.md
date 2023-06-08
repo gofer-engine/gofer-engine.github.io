@@ -1,4 +1,4 @@
-[🏠 Gofer Engine](https://gofer-engine.github.io/) > Developing Interface Channels with Configs
+[🏠 Gofer Engine](./index.md) > Developing Interface Channels with Configs
 
 # Developing Interface Channels with Configs
 
@@ -8,14 +8,13 @@ _**NOTE**: Previously the default import `gofer` could be called as a function a
 
 If you are using TypeScript, the `ChannelConfig` type is the foundation for a Channel Config File. The Channel Config files, are JSON-like structured, but with the added support of adding functions for advance scripting needs and more complex channel configurations.
 
-[TypeScript Generics](#forcing-a-config-style-with-generics)
-[ID](#id)
-[Name](#name)
-[Tags](#tags)
-[Source](#source)
-[Ingestion](#ingestion)
-[Acknowledgements](#ack)
-[Routes](#routes)
+- [TypeScript Generics](#forcing-a-config-style-with-generics)
+- [ID](#id)
+- [Name](#name)
+- [Tags](#tags)
+- [Source](#source)
+- [Ingestion](#ingestion)
+- [Routes](#routes)
 
 A simplified view of the `ChannelConfig` type would look like:
 
@@ -159,34 +158,10 @@ type IngestionFlow =
   | StoreConfig
 ```
 
+More information on [`AckConfig`](./channel-workflows/ack.md) doc page.
 More information on [`FilterFlow`](./channel-workflows/filtering.md) doc page.
 More information on [`TransformFlow`](./channel-workflows/transforming.md) doc page.
 More information on [`StoreConfig`](./channel-workflows/store-configs.md) doc page.
-
-_[Back to top](#developing-interface-channels-with-configs)_
-
-## ack
-
-The `ack` flow is an optional ingestion flow. If the server should respond to the source, then there should be an ack flow somewhere in the list of ingestion flows. The type `AckConfig` is:
-
-```typescript
-type AckConfig = {
-  // Optional. Value to use in ACK MSH.3 field. Defaults to 'gofer Engine'
-  application?: string
-  // Optional. Value to use in ACK MSH.4 field. Defaults to ''
-  organization?: string
-  // Optional. Value to use in MSA-1 field. Defaults to 'AA'
-  responseCode?: 'AA' | 'AE' | 'AR'
-  // Optional. Text to use in ACK MSA.3. Defaults to ''
-  text?: string
-  // Optional. A function that accepts the ack MSG class, msg MSG class, and conext state object
-  // and returns the ACK MSG class back. This allows for custom transformation of the ACK message.
-  msg?: (ack: Msg, msg: Msg, context: IAckContext) => Msg
-}
-```
-
-More information on [Acknowledgement Workflow](./channel-workflows/ack.md) doc page.
-More information on [Msg](./msg-class/index.md)
 
 _[Back to top](#developing-interface-channels-with-configs)_
 

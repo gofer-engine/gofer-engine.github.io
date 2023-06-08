@@ -1,3 +1,5 @@
+[🏠 Gofer Engine](https://gofer-engine.github.io/) > [Channel Workflows](./index.md) > Context Object
+
 ## Context Object
 
 The acknowledgement, filter, and transformer functions all have access to a `context` object. This object can be used to retrieve variable getters and setters that can be used to pass data between flow. Also in this context, you will find a logger function, and the absolute unique message id. The `context` object can be defined as:
