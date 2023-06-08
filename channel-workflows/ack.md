@@ -2,7 +2,7 @@
 
 # Acknowledgement
 
-Acknowledgements are responses returned to the sender of a message. If a sender is using queuing, then an acknowledgement response in a timely manner, will inform the sender that the message was received whether accepted or rejected. This will let the sender move on to the next message in the queue.
+Acknowledgements are responses returned to the sender of a message. If a sender is using queuing, then an acknowledgement response promptly will inform the sender that the message was received whether accepted or rejected. This will let the sender move on to the next message in the queue.
 
 The `ack` flow is an optional ingestion flow. If the server should respond to the source, then there should be an ack flow somewhere in the list of ingestion flows. If you do not add an ack config in your ingestion flow, and you are not utilizing source queuing, then no response will be returned to the sender.
 

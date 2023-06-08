@@ -2,7 +2,7 @@
 
 ### Extrapolating
 
-HL7 uses paths to reference data inside of the HL7 message structure. The path is a string that is a combination of the segment name, segment iteration index, field index, field iteration index, component index, and subcomponent index. Iteration indexes are surrounded by brackets (`[...]`). The other path parts are separated by either a period (`.`) or dash (`-`). The path is 1-indexed, meaning the first segment iteration is `1`, the first field is `1`, the first field iteration is `1`, the first component is `1`, and the first subcomponent is `1`. The segment name is 3 upper case characters. A path can be specific down to the subcomponent level with optional iteration indexes, or can be as general as just the segment name. The following are all valid paths (_may not be valid HL7 schemed messages)):
+HL7 uses paths to reference data inside of the HL7 message structure. The path is a string that is a combination of the segment name, segment iteration index, field index, field iteration index, component index, and subcomponent index. Iteration indexes are surrounded by brackets (`[...]`). The other path parts are separated by either a period (`.`) or a dash (`-`). The path is 1-indexed, meaning the first segment iteration is `1`, the first field is `1`, the first field iteration is `1`, the first component is `1`, and the first subcomponent is `1`. The segment name is 3 upper case characters. A path can be specific down to the subcomponent level with optional iteration indexes or can be as general as just the segment name. The following are all valid paths (_may not be valid HL7 schemed messages)):
 
 `MSH`, `MSH-3`, `MSH.7`, `MSH.9.1`, `MSH.9-2`, `MSH.10`, `STF-2.1`, `STF-2[2].1`, `STF-3.1`, `STF-11[2]`, `LAN[1]`, `LAN[2].3`, `LAN[3].6[1].1`
 
@@ -37,7 +37,7 @@ EDU|2|MD^DOCTOR OF MEDICINE^HL70360|19850901^19890601|HARVARD MEDICAL SCHOOL^L |
 ZZZ|Source|HL7 Version 2.5.1 Standard^Chapter&15&Personnel Management^Section&5&Example Transactions^Page&15-40^Date&200704
 ```
 
-The `Msg` class exposes the `get` method that accepts a string which can comprised of the following:
+The `Msg` class exposes the `get` method that accepts a string which can be comprised of the following:
 
 - Segment Name
 - Segment Repition Index
@@ -46,21 +46,21 @@ The `Msg` class exposes the `get` method that accepts a string which can compris
 - Component Index
 - Sub-Component Index
 
-Repition Indexes are optional and can be omitted. If omitted on a repeating segment/field, then an array of values will be returned.
+Repetition Indexes are optional and can be omitted. If omitted on a repeating segment/field, then an array of values will be returned.
 
 For example to get all LAN segments you can use the get path `LAN`.
 
-If you wanted just one of the segments, you would add in the repition index, for example `LAN[2]` would return the second LAN segment.
+If you wanted just one of the segments, you would add in the repetition index, for example, `LAN[`2]` would return the second LAN segment.
 
-Repition Indexes are always syntactically wrapped in square brackets. e.g. `[2]`
+Repetition Indexes are always syntactically wrapped in square brackets. e.g. `[2]`
 
 Field, Component, and Sub-Component are optional and can be omitted. If omitted and the field/component is made up of smaller units, then an array of values will be returned.
 
-For example to get all the components of the language codes in the 1st LAN segment you can use the get path `LAN[1]-2`
+For example, to get all the components of the language codes in the 1st LAN segment you can use the get path `LAN[1]-2`
 
 Field, Component, and Sub-Component are always prefixed with either a dot or a hyphen. e.g. `.2` or `-2`
 
-If you if there is only a single larger component, then the smaller divisions can be omitted, but if you specify the 1st smaller division, then it will return the larger component itself.
+If there is only a single larger component, then the smaller divisions can be omitted, but if you specify the 1st smaller division, then it will return the larger component itself.
 
 For example, `EVN-1.1.1` will return the same as `EVN-1.1` or `EVN-1`
 

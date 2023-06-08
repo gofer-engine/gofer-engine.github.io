@@ -2,7 +2,7 @@
 
 ## Transforming
 
-You can use the following methods to transform the message. Each method returns the self class instance, so you can chain the methods together as needed.
+You can use the following methods to transform the message. Each method returns the self-class instance, so you can chain the methods together as needed.
 
 ### addSegment
 
@@ -108,7 +108,7 @@ msg.set('LAN[3]-4.2', 'GOOD')
 
 ### setJSON
 
-`setJSON(path: string, value: MsgValue)` — Sets the value at the given path with a JSON object in case of sub items.
+`setJSON(path: string, value: MsgValue)` — Sets the value at the given path with a JSON object in case of sub-items.
 
 ```ts
 msg.setJSON('LAN-4', ['3', 'FAIR', 'HL70404'])

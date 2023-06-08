@@ -2,7 +2,7 @@
 
 # Setup, Installation, and Usage
 
-I find it helpful to newer developers to have a setp-by-step guide to get them started. If you are experienced already with Node projects, you can skip to the [Installation](#installation) section.
+I find it helpful to newer developers to have a step-by-step guide to get them started. If you are experienced already with Node projects, you can skip to the [Installation](#installation) section.
 
 ## Prerequisites
 
@@ -90,7 +90,7 @@ const channel: ChannelConfig = {
 gofer.configs([channel])
 ```
 
-The above examples add a single channel that listens on `localhost` port `5500` via `tcp` for HL7 v2.x messages. It will reply with an acknowledgement message and write the message to a file in the default `./local` directory.
+The above examples add a single channel that listens on `localhost` port `5500` via `tcp` for HL7 v2.x messages. It will reply with an acknowledgment message and write the message to a file in the default `./local` directory.
 
 See the [Developing Interface Channels in OOP style](./developing-interface-channels-in-oop.md) or the [Developing Interface Channels with Config Files]('./developing-interface-channels-with-configs.md) pages for more information on building and configuring channels.
 
@@ -110,7 +110,7 @@ _By using nodemon as you make changes to your project files the server will rest
 
 ### Version Control with Git
 
-One of the beautifies of using Gofer Engine is that you can version control your channels, by simply checking your Node project into a git repository. Tihs allows you to easily branch and merge changes to your channels to ease with developement and testing of new interface and changes to existing interfaces.
+One of the beauties of using Gofer Engine is that you can version control your channels, by simply checking your Node project into a git repository. This allows you to easily branch and merge changes to your channels to ease with development and testing of new interfaces and changes to existing interfaces.
 
 With git comes other tools to help develop pipelines for CI/CD. Here are some tools to check out:
 
@@ -119,7 +119,7 @@ With git comes other tools to help develop pipelines for CI/CD. Here are some to
 
 And if you need more resources for CI/CD then check out these [38 Best CI/CS Tools for 2023](https://www.lambdatest.com/blog/best-ci-cd-tools/).
 
-If you are on-premise only environment, then might I recommend [Bonobo Git Server](https://bonobogitserver.com/) as an alternative to [Github](http://github.com/).
+If you are an on-premise-only environment, then might I recommend [Bonobo Git Server](https://bonobogitserver.com/) as an alternative to [GitHub](http://github.com/).
 
 ### Preparing for Production
 
@@ -139,8 +139,8 @@ The workflow outlined below uses a git repository. You could deploy to productio
 1. On your production server run `git clone <your-project-repo>` to clone your repository.
 2. Run `npm install && run build && npm start` to install dependencies, build, and start the server.
 
-If going to production in a Windows environment, you couls use this setup guide to run the node server as a Windows Service: https://www.helpmegeek.com/run-nodejs-application-as-windows-service/
+If going to production in a Windows environment, you could use this setup guide to run the node server as a Windows Service: [https://www.helpmegeek.com/run-nodejs-application-as-windows-service/](https://www.helpmegeek.com/run-nodejs-application-as-windows-service/)
 
-If going to production in a Linux environment, you could use this setup guide to run the server: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04
+If going to production in a Linux environment, you could use this setup guide to run the server: [https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04)
 
 You could alternatively use docker with a docker-compose file to clone your repository, install dependencies, build the project, and start the server in a container. This configuration is out of the current scope, but if anyone needs help or wants to contribute, please reach out.

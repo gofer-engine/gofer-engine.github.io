@@ -2,11 +2,8 @@
 
 # Developing Interface Channels in OOP Style
 
-We have strived to make developing interface channels as easy as possible. The goals is to make it so that you can create a channel in a few minutes and have it running immediately in test environment and then deploy it to a production environment with minimal effort.
-
-> Create Interface Channels in Minutes not Hours nor Weeks!
-
-The gofer Engine class has methods to quicly and easily create and run channel configuration scripts. The default export is already an instance of the class, so you can just start using it immediately.
+We have strived to make developing interface channels as easy as possible. The goal is to make it so that you can create a channel in a few minutes and have it running immediately in a test environment and then deploy it to a production environment with minimal effort.
+The Gofer Engine class has methods to quickly and easily create and run channel configuration scripts. The default export is already an instance of the class, so you can just start using it immediately.
 
 - [listen](#listen)
 - [IngestionClass](#ingestionclass)
@@ -56,7 +53,7 @@ To begin a new channel, use the `listen` method. This method accepts three argum
 - `host`: A `string` for the ip or hostname on which to listen
 - `port`: The `number` of the port to listen on.
 
-_**Note**: Currently only TCP listeners are supported. In a future release there will be additional methods to listen, read, and accept messages._
+_**Note**: Currently only TCP listeners are supported. In a future release, there will be additional methods to listen, read, and accept messages._
 
 ```typescript
 // example.ts
@@ -109,7 +106,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### ack
 
-Call the `ack` method to reply back an HL7 acknowledgement. See [Acknowledge Config](./channel-workflows/ack.md)
+Call the `ack` method to reply back an HL7 acknowledgment. See [Acknowledge Config](./channel-workflows/ack.md)
 
 ```typescript
 // definition
@@ -182,7 +179,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setVar
 
-Call the `setVar` method to set a variable value for the specific scope. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
+Call the `setVar` method to set a variable value for the specific scope. The `varValue` can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
 
 ```typescript
 // definition
@@ -220,7 +217,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setChannelVar
 
-Call the `setChannelVar` method to set a variable value for the Channel scope. Later in this message or following messages within this same channel will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
+Call the `setChannelVar` method to set a variable value for the Channel scope. Later in this message or following messages within this same channel will be able to use this variable. The `varValue` can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
 
 ```typescript
 // definition
@@ -236,7 +233,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setGlobalVar
 
-Call the `setGlobalVar` method to set a variable value for the Global scope. Anywhere later in current or following messages within this same server will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
+Call the `setGlobalVar` method to set a variable value for the Global scope. Anywhere later in current or following messages within this same server will be able to use this variable. The `varValue` can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
 
 ```typescript
 // definition
@@ -252,7 +249,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### getVar
 
-Call the `getVar` method to get a previously set variable for the given scope by name. Define the callback function (`cb`) to do something with the value of the variable. You can use the value to filter or transform the message, do something with the [`MessageContext`](./channel-workflows/context-object.md).
+Call the `getVar` method to get a previously set variable for the given scope by name. Define the callback function (`cb`) to do something with the value of the variable. You can use the value to filter or transform the message, or do something with the [`MessageContext`](./channel-workflows/context-object.md).
 
 - To filter the message, return a boolean.
 - To transform the message, return the transformed Msg class instance
@@ -348,7 +345,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 Call the `routes` method to route the message to _multiple_ routes. This method returns an instance of [`CompleteClass`](#completeclass).
 
-The argument to the routes is a function that provides a getter of an instance of a `RouteClass` and must return an array of instances of `RouteClasses`. This allows multiple routes to be initiated from a single getter function. See [`RouteClass`](#routeclass) for the available methods.
+The argument to the routes is a function that provides a getter of an instance of a `RouteClass` and must return an array of instances of `RouteClasses`. This allows multiple routes to be initiated from a single-getter function. See [`RouteClass`](#routeclass) for the available methods.
 
 Notice that each array begins by calling the `route` function. This is different from the single route method above.
 
@@ -373,7 +370,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ## RouteClass
 
-The RouteClass has all of the above methods of the [`IngestionClass`](#ingestionclass) excluding `ack`, `route`, and `routes`. The `setVar` and `getVar` has the additional scope `"Route"`, and the RouteClass has these additional methods:
+The RouteClass has all of the above methods of the [`IngestionClass`](#ingestionclass) excluding `ack`, `route`, and `routes`. The `setVar` and `getVar` have the additional scope `"Route"`, and the RouteClass has these additional methods:
 
 ### setRouteVar
 
@@ -421,7 +418,7 @@ type send = (method: 'tcp', host: string, port: number) => RouteClass
 route.send('tcp', 'localhost', 5505)
 ```
 
-_**NOTE**: Currently only TCP clients are supported. In a future release there will be additional methods to senders, writers, and callback messages._
+_**NOTE**: Currently only TCP clients are supported. In a future release, there will be additional methods to senders, writers, and callback messages._
 
 _[Back to top](#developing-interface-channels-in-oop-style)_
 
@@ -455,7 +452,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 (_FUTURE_) Call the `msg` method to define a callback function to call for at the end of each route.
 
-_**NOTE**: This will be used in a future releast with non listening channel configs, such as a message pass through or one time file read_
+_**NOTE**: This will be used in a future release with non listening channel configs, such as a message pass-through or one-time file read_
 
 ```typescript
 // definition

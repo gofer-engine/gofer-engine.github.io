@@ -4,9 +4,9 @@
 
 Alternatively to the OOP style channel building, you can also use the predated method to configure and run interface channels.
 
-_**NOTE**: Previously the default import `gofer` could be called as a function and passed directly the channel configurations such as `gofer(CHANNELS)`. Since `1.0.0` the default gofer can no longer be called as a function, but is instead a class and the `configs` method provides the backwards compatible functionality like: `gofer.configs(CHANNELS)`.
+_**NOTE**: Previously the default import `gofer` could be called as a function and passed directly to the channel configurations such as `gofer(CHANNELS)`. Since `1.0.0` the default gofer can no longer be called as a function but is instead a class and the `configs` method provides the backward compatible functionality like `gofer.configs(CHANNELS)`.
 
-If you are using TypeScript, the `ChannelConfig` type is the foundation for a Channel Config File. The Channel Config files, are JSON-like structured, but with the added support of adding functions for advance scripting needs and more complex channel configurations.
+If you are using TypeScript, the `ChannelConfig` type is the foundation for a Channel Config File. The Channel Config files, are JSON-like structured, but with the added support of adding functions for advanced scripting needs and more complex channel configurations.
 
 - [TypeScript Generics](#forcing-a-config-style-with-generics)
 - [ID](#id)
@@ -65,9 +65,7 @@ const flow: IngestionFlow = {
 }
 ```
 
-_[Back to top](#developing-interface-channels-with-configs)_
-
-The `IngestionFlow` accept generics to force a style. The first generic controlls the Filter flows, and the second generic controlls the Transform flows. The generic is either `'O'` for objects, `'F'` for functions, or `'B'` to allow either (default).
+_[Back to top]The `IngestionFlow` accepts generics to force a style. The first generic controls the Filter flows, and the second generic controls the Transform flows. The generic is either `'O'` for objects, `'F'` for functions, or `'B'` to allow either (default).
 
 ```typescript
 const flows: IngestionFlow<'O', 'O'>[] = []
@@ -113,13 +111,13 @@ interface Tag {
 }
 ```
 
-Note: These tags are not currently used by the engine or the admin API. Eventually I would like to add a UI to help visualize the channels and their dependencies which would use these tags.
+Note: These tags are not currently used by the engine or the admin API. Eventually, I would like to add a UI to help visualize the channels and their dependencies which would use these tags.
 
 _[Back to top](#developing-interface-channels-with-configs)_
 
 ## source
 
-The `source` is required and is the source of the messages to process. Currently the only supported source is TCP Listener for HL7 messages. The interface `Connection<'I'>` is computed to:
+The `source` is required and is the source of the messages to process. Currently, the only supported source is TCP Listener for HL7 messages. The interface `Connection<'I'>` is computed to:
 
 ```typescript
 interface Connection {
@@ -167,9 +165,9 @@ _[Back to top](#developing-interface-channels-with-configs)_
 
 ## routes
 
-The `routes` are optional and are a list of routes composed of flows to process and send messages to other destinations. Each route is a list of flows to process messages as they are received. The order of routes is not important, however the order of the flows in each route is important. If there are asynchronous flows in a route, then other routes can continue to execute while waiting.
+The `routes` are optional and are a list of routes composed of flows to process and send messages to other destinations. Each route is a list of flows to process messages as they are received. The order of routes is not important, however, the order of the flows in each route is important. If there are asynchronous flows in a route, then other routes can continue to execute while waiting.
 
-The `ChannelConfig` interface was simplified above to show the basic structure. The `routes` property can be lossely defined as multideimensional array of `RouteFlow` or `RouteFlowNamed` interfaces. Or it can be strictly defined as an array of `Route` interfaces typed as:
+The `ChannelConfig` interface was simplified above to show the basic structure. The `routes` property can be loosely defined as multidimensional array of `RouteFlow` or `RouteFlowNamed` interfaces. Or it can be strictly defined as an array of `Route` interfaces typed as:
 
 ```typescript
 interface Route {
@@ -184,7 +182,7 @@ interface Route {
 
 With strict Channel Config (`ChannelConfig<'O', 'O', 'S'>`) then the `routes` property must be defined as a `Route` interface and the `id` becomes required.
 
-Similarly the `Route['flow']` type is simplified above to show the basic structure. The `flows` property can be lossely defined as an array of `RouteFlow` or `RouteFlowNamed` interfaces. Or it can be strictly defined to only include `RouteFlowNamed` interfaces typed as:
+Similarly, the `Route`['flow']` type is simplified above to show the basic structure. The `flows` property can be loosely defined as an array of `RouteFlow` or `RouteFlowNamed` interfaces. Or it can be strictly defined to only include `RouteFlowNamed` interfaces typed as:
 
 ```typescript
 interface RouteFlowNamed {
@@ -225,7 +223,7 @@ type RouteFlow =
     }
 ```
 
-Currently only TCP remote destinations are supported.
+Currently, only TCP remote destinations are supported.
 
 See [FilterFlow](./channel-workflows/filtering.md)
 See [TransformFlow](./channel-workflows/transforming.md)

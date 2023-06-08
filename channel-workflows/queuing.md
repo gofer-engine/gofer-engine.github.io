@@ -2,13 +2,13 @@
 
 ## Queuing
 
-Queuing is useful for when you need to allow retries or throttle the number of messages being processed at a time. The Queue can be configured in three different places in a channel config.
+Queuing is useful when you need to allow retries or throttle the number of messages being processed at a time. The Queue can be configured in three different places in a channel config.
 
 1. In the TCP Source. This will queue all messages coming in from the TCP source. This will allow for a quick ack to the sender that the message was queued without having to wait for the ingestion flow to process the messages up to an ack flow. Ack flows in the ingestion array will not be sent back to the original sender when using a queue.
 2. In the Route. This will queue the message before it is sent to the flows of the route. This could be useful if you want to throttle the number of messages being sent to a specific route or if a transformer, filter, store, or destination flow is problematic to allow for retries of the entire route again.
-3. In TCP RouteFlows. Typing currently allows queues to be added to any RouteFlow, but only TCP RouteFlows will actually queue the messages. This is useful if you want to throttle the number of messages being sent to a specific destination, or to retry the TCP connection again in case of a downtime or other transport failure.
+3. In TCP RouteFlows. Typing currently allows queues to be added to any RouteFlow, but only TCP RouteFlows will queue the messages. This is useful if you want to throttle the number of messages being sent to a specific destination or to retry the TCP connection again in case of downtime or other transport failure.
 
-_NOTE_: TCP destinations that return a NACK do not currently retry the message. This could be added in the future if there is a need for it. Most of the systems I have worked with, the NACK is a permanent failure and the message should be discarded.
+_NOTE_: TCP destinations that return a NACK do not currently retry the message. This could be added in the future if there is a need for it. In most of the systems I have worked with, the NACK is a permanent failure and the message should be discarded.
 
 The interface `QueueConfig` is defined as:
 
@@ -33,15 +33,15 @@ The `filo` option when set to true, reverses the queue order to First-In-Last-Ou
 
 The `retries` option is the number of times to retry the message before discarding it. The default is `Infinity` which will retry the message forever.
 
-The `id` option is a function that takes the message and returns a unique string. This is used to identify the message in the queue. The default is `crypto.randomUUID()` which is a cryptographically secure random number generator. Alternatively, you could use the message id from the MSH segment with `(msg) => msg.get('MSH-10.1')`. This is useful to prevent duplicate messages in the queue simultaneously. But if a duplicate id used, but the previous message has already been processed, the new message will be processed as well.
+The `id` option is a function that takes the message and returns a unique string. This is used to identify the message in the queue. The default is `crypto.randomUUID()` which is a cryptographically secure random number generator. Alternatively, you could use the message id from the MSH segment with `(msg) => msg.get('MSH-10.1')`. This is useful to prevent duplicate messages in the queue simultaneously. But if a duplicate id is used, and the previous message has already been processed, the new message will be processed as well.
 
 The `concurrent` option is the number of messages to process at a time. The default is `1` which will process one message at a time. This is useful if you want to throttle the number of messages being processed at a time. If you want a faster throughput, you can increase this number, but you will most likely experience message reordering. To ensure message order, you can only use a `concurrent` value of `1`.
 
 The `maxTimeout` option is the maximum amount of time to wait for a message to be processed before retrying. This is implemented currently by the queueing class, but **not yet implemented** in the actual flows.
 
-The `afterProcessDelay` option was initially defined as ~the amount of time to wait after a message has been processed before processing the next message~. But that is **not** how it is currently actually implemented. This option currently sets how long between each poll of the queue worker. For example, if this was set as 1 minute and the last message started a minute ago, but just finished processing after 90 seconds, then poll at the 1 minute mark would have returned due to "still processing", but it would poll again at the 2-minute mark. So this is not technically the amount of time to wait _after_ a message has been processed, but rather the amount of time to wait _between_ each poll of the queue worker.
+The `afterProcessDelay` option was initially defined as ~the amount of time to wait after a message has been processed before processing the next message~. But that is **not** how it is currently actually implemented. This option currently sets how long between each poll of the queue worker. For example, if this was set as 1 minute and the last message started a minute ago, but just finished processing after 90 seconds, then the poll at the 1-minute mark would have returned due to "still processing", but it would poll again at the 2-minute mark. So this is not technically the amount of time to wait _after_ a message has been processed, but rather the amount of time to wait _between_ each poll of the queue worker.
 
-The `rotate` option does not preserve the order of the messages. When a message failes and is requeued it will be placed at the end of the queue. This is useful if don't care about the order of the messages and also don't want a single failed message to block the entire queue.
+The `rotate` option does not preserve the order of the messages. When a message fails and is requeued it will be placed at the end of the queue. This is useful if don't care about the order of the messages and also don't want a single failed message to block the entire queue.
 
 The `verbose` option is useful for debugging. It will log the queue events to the console.
 
@@ -54,4 +54,4 @@ stringify: (msg) => JSON.stringify(msg.raw()),
 parse: (msg) => new Msg(JSON.parse(msg))
 ```
 
-_**NOTE**: At this time OOP style channel configs do not support queuing._
+_**NOTE**: At _this time OOP-style channel configs do not support queuing._

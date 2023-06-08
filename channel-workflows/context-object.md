@@ -2,7 +2,7 @@
 
 ## Context Object
 
-The acknowledgement, filter, and transformer functions all have access to a `context` object. This object can be used to retrieve variable getters and setters that can be used to pass data between flow. Also in this context, you will find a logger function, and the absolute unique message id. The `context` object can be defined as:
+The acknowledgment, filter, and transformer functions all have access to a `context` object. This object can be used to retrieve variable getters and setters that can be used to pass data between flows. Also in this context, you will find a logger function and the absolute unique message id. The `context` object can be defined as:
 
 ```typescript
 export interface IMessageContext {
@@ -22,12 +22,12 @@ export interface IAckContext extends IMessageContext {
 }
 ```
 
-I assume most of these are self explanatory, but let's go over a few details just in case.
+I assume most of these are self-explanatory, but let's go over a few details just in case.
 
-The variable getters and setters can be passed a generic type to strongly type the variable. It is recommended to use this to prevent any type errors. There are 4 different types of variables that can be set and retrieved. The `Global` variables are set and retrieved from the global context. The `Channel` variables are set and retrieved from the channel context. The `Route` variables are set and retrieved from the route context. The `Route` getters and setters may be undefined if not within the context of a route. The `Msg` variables are set and retrieved from the message context. After the processing of the message, the `Msg` variables are cleared to free up memory.
+The variable getters and setters can be passed a generic type to strongly type the variable. It is recommended to use this to prevent any type of errors. 4 different types of variables can be set and retrieved. The `Global` variables are set and retrieved from the global context. The `Channel` variables are set and retrieved from the channel context. The `Route` variables are set and retrieved from the route context. The `Route` getters and setters may be undefined if not within the context of a route. The `Msg` variables are set and retrieved from the message context. After the processing of the message, the `Msg` variables are cleared to free up memory.
 
 The `set` functions will create the variable if it does not exist, and the `get` functions will return `undefined` if the variable does not exist.
 
-The `filtered` property of the `AckContext` is a boolean that is set to `true` if the message was filtered. This can be used to determine if the message was filtered or not in the ingestion flow before the acknowledgement config. _Note, this is ignored if a queue is used in the TCP Source._
+The `filtered` property of the `AckContext` is a boolean that is set to `true` if the message was filtered. This can be used to determine if the message was filtered or not in the ingestion flow before the acknowledgment config. _Note, this is ignored if a queue is used in the TCP Source._
 
 See [Queuing Workflows](./queuing.md) for more information on Queu Configs.

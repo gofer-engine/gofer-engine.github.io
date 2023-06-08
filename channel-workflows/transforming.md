@@ -15,7 +15,7 @@ _Refer to the **[Message Class (`Msg`)](../msg-class/index.md)** below for more 
 
 _Refer to the **[Context Object](./context-object.md)** below for more information on the `context` object._
 
-The trasnformer functions of the class retun back the class instance, so you can chain them together. Here is an example of a transformer that takes the field `PV1-3` and adds a prefix to it:
+The transformer functions of the class retuns back the class instance, so you can chain them together. Here is an example of a transformer that takes the field `PV1-3` and adds a prefix to it:
 
 ```typescript
 const channelConfig: ChannelConfig = {
@@ -55,9 +55,9 @@ const channelConfig: ChannelConfig = {
 
 For advanced type control, you can pass through a generic to the ChannelConfig (the _second_ generic option) which passes down to the FilterFlow generic to either:
 
-- `'F'` = Only allow raw transform functions. E.G. `ingection: [(msg) => msg]`
-- `'O'` = Only allow transform functions in objects. E.G. `ingestion: [{ transform: (msg) => msg }]`
-- `'B'` = Allow both raw transform function or wrapped in objects. E.G. `ingestion: [(msg) => msg, { transform: (msg) => msg }]`
+- `'F'` = Only allows raw transform functions. E.G. `ingection: [(msg) => msg]`
+- `'O'` = Only allow transforming functions in objects. E.G. `ingestion: [{ transform: (msg) => msg }]`
+- `'B'` = Allow both raw transform functions or wrapped in objects. E.G. `ingestion: [(msg) => msg, { transform: (msg) => msg }]`
 
 The default is `'B'`. E.G. `const conf: ChannelConfig<'B', 'B'> = ...`
 

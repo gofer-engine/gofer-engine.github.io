@@ -2,9 +2,9 @@
 
 # Channel Workflows
 
-Workflows are used in Ingestion and Routing to perform different steps. Currently the available workflows are available:
+Workflows are used in Ingestion and Routing to perform different steps. Currently, the available workflows are available:
+Acknowledgment](./ack.md)
 
-- [Acknowledgement](./ack.md)
 - [Filtering](./filtering.md)
 - [Transforming](./transforming.md)
 - [Store Configs](./store-configs.md)

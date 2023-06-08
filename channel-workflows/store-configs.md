@@ -38,6 +38,6 @@ The `file.path`, `file.filename`, `surreal.namespace`, `surreal.database`, `surr
 
 The parameter of `surreal.id` if set to `"UUID"` will generate universally unique identifiers.
 
-The `file.path` and `file.filename` settings can be an array of strings that get concatenated together. Paths are concatenated using the directory traverse character (`/`). Filenames are concatenating with no separating character. If you need a separating character, then you can add it as an element in the array.
+The `file.path` and `file.filename` settings can be an array of strings that get concatenated together. Paths are concatenated using the directory traverse character (`/`). Filenames are concatenating with no separating characters. If you need a separating character, then you can add it as an element in the array.
 
-In the future, more stores will be added. We are open to pull requests for new stores at: [gofer-stores](https://github.com/amaster507/gofer-stores)
+In the future, more stores will be added. We are open to pull requests for new stores at [gofer-stores](https://github.com/amaster507/gofer-stores)](https://github.com/amaster507/gofer-stores)

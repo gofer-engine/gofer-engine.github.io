@@ -13,7 +13,7 @@
 Msg.getSegment(name: string, iteration?: number) => Seg | Segs
 ```
 
-- `Seg[]` returned `Seg` classes in an array. _**NOTICE** These will be 0-based indexed._
+- `Seg[]` returned `Seg` classes in an array. _**NOTICE** These will be 0-based index._
 
 ```ts
 Msg.getSegments(name: string) => Seg[]
@@ -25,11 +25,11 @@ Msg.getSegments(name: string) => Seg[]
 
 - Flds
 
-- Fld[] (`Seg.getFields(index: number)`) returned `Fld` classes in an array. _**NOTICE** These will be 0-based indexed._
+- Fld[] (`Seg.getFields(index: number)`) returned `Fld` classes in an array. _**NOTICE** These will be 0-based index._
 
 ### Rep[]
 
-- Rep[] (`Fld.getRepetitions()`) returned `Rep` classes in an array. _**NOTICE** These will be 0-based indexed._
+- Rep[] (`Fld.getRepetitions()`) returned `Rep` classes in an array. _**NOTICE** These will be 0-based index._
 
 ### Cmp, Cmps, & Cmp[]
 
@@ -42,13 +42,13 @@ Rep.getComponent(index?: number)
 ```
 
 - Cmps (`Field.getComponent(index?: number)`) returned when there are multiple components
-- Cmp[] (`Field.getComponents(index: number)`) returned `Cmp` classes in an array. _**NOTICE** These will be 0-based indexed._
+- Cmp[] (`Field.getComponents(index: number)`) returned `Cmp` classes in an array. _**NOTICE** These will be 0-based index._
 
 ### Sub, Subs, & MultiSubs
 
 - SubComponent (`Component.getSubComponent(index: number)`)
 
-Each of the above subclasses expose the following methods:
+Each of the above subclasses exposes the following methods:
 
 - `json(strict?: boolean)` — 
 - `toString()` — 

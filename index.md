@@ -2,7 +2,7 @@
 
 # Introducing Gofer Engine
 
-_A HL7 interface engine built for simplicity and speed, strongly typed, and ready to containerize._
+_An HL7 interface engine built for simplicity and speed, strongly typed, and ready to containerize._
 
 ```ts
 import gofer from 'gofer-engine'
@@ -17,15 +17,15 @@ gofer
   .run()
 ```
 
-This is just a minimal example to setup a pass-through interface engine logging messages to files. Gofer Engins is much more capable than just a simple pass-through engine. It also supports filtering, transforming, queuing, events, routing, and much more.
+This is just a minimal example to set up a pass-through interface engine logging messages to files. Gofer Engine is much more capable than just a simple pass-through engine. It also supports filtering, transforming, queuing, events, routing, and much more.
 
 - Gofer Engine includes strongly typed classes for TypeScript developers. It can run in any Node.JS environment wherever you want to deploy, on a server, on your developing workstation, or in docker containers.
 - Easily enable CI/CD pipelines with git repos and develop channels using either OOP or strongly typed configuration files.
-- Easily extract, map, set, and append to HL7 messages using our custom built st-hl7 package.
+- Easily extract, map, set, and append to HL7 messages using our custom-built st-hl7 package.
 
 > Reinventing healthcare interoperability tooling!
 
-Best of all, unstainall Java once and for all on your interface servers. Gofer Engine is built around the modern Node.JS stack and does not require any licensed software to run in development nor production. Gofer Engine is open source for transparency and continued community development.
+Best of all, uninstall Java once and for all on your interface servers. Gofer Engine is built around the modern Node.JS stack and does not require any licensed software to run in development or production. Gofer Engine is open source for transparency and continued community development.
 
 ## Documentation
 

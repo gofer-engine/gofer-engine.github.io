@@ -9,11 +9,11 @@ type FilterFunc = (msg: Msg, context: IMessageContext) => boolean
 type FilterFlow = FilterFunc | { kind: 'filter'; filter: FilterFunc }
 ```
 
-_Refer to the **[Message Class (`Msg`)](../msg-class/index.md)** for more information on the `Msg` class and extrapulating data from the message to use in comparisons._
+_Refer to the **[Message Class (`Msg`)](../msg-class/index.md)** for more information on the `Msg` class and extrapolating data from the message to use in comparisons._
 
 _Refer to the **[Context Object](./context-object.md)** for more information on the `context` object._
 
-If the filter function returns `true`, then the message will be processed further. If the filter functions returns `false`, then the message will be dropped. An easy cathy phrase to remember is "If it's true, then let it through. If it's false, then it will halt."
+If the filter function returns `true`, then the message will be processed further. If the filter functions return `false`, then the message will be dropped. An easy catchy phrase to remember is "If it's true, then let it through. If it's false, then it will halt."
 
 Here is a simple example of a filter that will only allow ADT event messages to be processed further:
 
@@ -62,9 +62,9 @@ const channelConfig: ChannelConfig = {
 
 For advanced type control, you can pass through a generic to the ChannelConfig (the _first_ generic option) to either:
 
-- `'F'` = Only allow raw filter functions. E.G. `ingestion: [() => true]`
+- `'F'` = Only allows raw filter functions. E.G. `ingestion: [() => true]`
 - `'O'` = Only allow filter functions in objects. E.G. `ingestion: [{ filter: () => true }]`
-- `'B'` = Allow both raw filter function or wrapped in objects. E.G. `ingestion: [() => true, { filter: () => true }]`
+- `'B'` = Allow both raw filter functions or wrapped in objects. E.G. `ingestion: [() => true, { filter: () => true }]`
 
 The default is `'B'`. E.G. `const conf: ChannelConfig<'B'> = ...`
 
