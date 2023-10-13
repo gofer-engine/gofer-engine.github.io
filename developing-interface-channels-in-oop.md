@@ -57,8 +57,7 @@ _**Note**: Currently only TCP listeners are supported. In a future release, ther
 
 ```typescript
 // example.ts
-import gofer from 'gofer-engine'
-import { ChannelConfig } from 'gofer-engine'
+import gofer,  { ChannelConfig } from '@gofer-engine/engine'
 
 const ingest = gofer.listen('tcp', 'localhost', 5501)
 // we will continue building upon this snippet
@@ -201,7 +200,7 @@ _[Back to top](#developing-interface-channels-in-oop-style)_
 
 ### setMsgVar
 
-Call the `setMsgVar` method to set a variable value for the Message scope. Later in this message will be able to use this variable. The varValue can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
+Call the `setMsgVar` method to set a variable value for the Message scope. Later in this message will be able to use this variable. The `varValue` can either be the value itself or a function to callback to retrieve the value from the message and context. See [Variables](./channel-workflows/variables.md) for more information on using variables.
 
 ```typescript
 // definition

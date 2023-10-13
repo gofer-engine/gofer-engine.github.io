@@ -78,7 +78,7 @@ type StoreConfig =
     }
 ```
 
-The below config settings can use values from the message using the HL7 path (See [Extrapolating Data from Messages](../msg-class/extrapolating.md):
+The below config settings can use values from the message using the HL7 path (See [Extrapolating Data from Messages](../msg-class/extrapolating.md)):
 
 - File Store
   - `path`

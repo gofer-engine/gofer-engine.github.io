@@ -46,7 +46,7 @@ _Just a side note, but if you are not already using VS-Code IDE, we highly recom
 ## Installation
 
 1. Open a terminal in your project folder
-1. Run `npm install gofer-engine` to install Gofer Engine dependency.
+1. Run `npm install @gofer-engine/engine` to install Gofer Engine dependency.
 
 ## Usage
 
@@ -55,7 +55,7 @@ _Just a side note, but if you are not already using VS-Code IDE, we highly recom
 1. Add the following code to the `server.ts` file:
 
 ```ts
-import gofer from 'gofer-engine'
+import gofer from '@gofer-engine/engine'
 
 gofer
   .listen('tcp', 'localhost', 5500)
@@ -68,8 +68,7 @@ gofer
 Alternatively, you could pass a configuration object:
 
 ```ts
-import gofer from 'gofer-engine'
-import { ChannelConfig } from 'gofer-engine'
+import gofer, { ChannelConfig } from '@gofer-engine/engine'
 
 const channel: ChannelConfig = {
   name: 'My First Channel',

@@ -31,7 +31,7 @@ This configuration allows you to leave the defaults and return an ACK with the d
 
 ```typescript
 // example.ts
-import gofer from 'gofer-engine'
+import gofer from '@gofer-engine/engine'
 
 gofer
   .listen('tcp', 'localhost', 5501)
@@ -62,7 +62,7 @@ For a little more complex example, we can use data in the received message, and 
 
 ```typescript
 // example.ts
-import gofer, { AckConfig } from 'gofer-engine'
+import gofer, { AckConfig } from '@gofer-engine/engine'
 
 const ackProcess: AckConfig['msg'] = (ack, msg, { filtered }) => {
   if (filtered) {
