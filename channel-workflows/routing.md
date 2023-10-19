@@ -38,6 +38,8 @@ interface ORoute {
   setRouteVar: <V>(varName: string, varValue: MsgVar<V>) => ORoute;
   getRouteVar: <V>(varName: string, getVal: WithVarDo<V>) => ORoute;
   send: (method: "tcp", host: string, port: number) => ORoute;
+  send: (method: "http", options: HTTPConfig) => ORoute;
+  send: (method: "https", options: HTTPSConfig) => ORoute;
   export: () => RequiredProperties<Route, "id" | "flows">;
 }
 
@@ -56,6 +58,68 @@ type RouteFlowNamed = {
   queue?: QueueConfig;
   flow: RouteFlow;
 };
+
+type FunctProp<R> = R | ((msg: IMsg, context: IMessageContext) => R);
+
+interface TcpConfig {
+  host: FunctProp<string>;
+  port: FunctProp<number>;
+  SoM?: FunctProp<string>;
+  EoM?: FunctProp<number>;
+  CR?: FunctProp<number>;
+  responseTimeout?: number | false;
+}
+
+interface HTTPConfig {
+  host: FunctProp<string>;
+  port: FunctProp<>;
+  method?:
+    | "GET"
+    | "HEAD"
+    | "POST"
+    | "PUT"
+    | "DELETE"
+    | "CONNECT"
+    | "OPTIONS"
+    | "TRACE"
+    | "PATCH";
+  path?: string;
+  basicAuth?: {
+    username: FunctProp<string>;
+    password: FunctProp<string>;
+  };
+  responseTimeout?: number | false;
+}
+
+interface HTTPSConfig extends HTTPConfig {
+  ca?: FunctProp<string | string[] | Buffer | Buffer[]>;
+  cert?: FunctProp<string | string[] | Buffer | Buffer[]>;
+  ciphers?: FunctProp<string>;
+  clientCertEngine?: FunctProp<string>;
+  crl?: FunctProp<string | string[] | Buffer | Buffer[]>;
+  dhparam?: FunctProp<string | Buffer>;
+  ecdhCurve?: FunctProp<string>;
+  honorCipherOrder?: FunctProp<boolean>;
+  key?: FunctProp<string | string[] | Buffer | Buffer[]>;
+  passphrase?: FunctProp<string>;
+  pfx?: FunctProp<
+    | string
+    | string[]
+    | Buffer
+    | Buffer[]
+    | { buf: string | Buffer; passphrase?: string }[]
+  >;
+  secureOptions?: FunctProp<number>;
+  secureProtocol?: FunctProp<string>;
+  sessionIdContext?: FunctProp<string>;
+  rejectUnauthorized?: FunctProp<boolean>;
+  severname?: FunctProp<string>;
+}
+
+type Connection =
+  | { kind: "tcp"; tcp: TcpConfig }
+  | { kind: "http"; http: HTTPConfig }
+  | { kind: "https"; https: HTTPSConfig };
 
 type varTypes = "Global" | "Channel" | "Route" | "Msg";
 
@@ -85,43 +149,43 @@ _Refer to the **[Queuing](./queuing.md)** below for more information on the `Que
 Using object configs offer simplified strongly typed configuration and allows the configs to be easily stringified to JSON for exporting/importing
 
 ```typescript
-import { Route, ChannelConfig } from '@gofer-engine/engine'
+import { Route, ChannelConfig } from "@gofer-engine/engine";
 
 const sendMsg: Route = {
-  kind: 'route', // required for strong typing
-  id: 'ID_1',
-  name: 'Example Route',
-  tags: [{ name: 'Examples' }],
+  kind: "route", // required for strong typing
+  id: "ID_1",
+  name: "Example Route",
+  tags: [{ name: "Examples" }],
   queue: {},
   flows: [
     {
-      kind: 'flow',
-      id: 'ID_2',
-      name: 'Example Flow',
-      tags: [{ name: 'Examples' }],
+      kind: "flow",
+      id: "ID_2",
+      name: "Example Flow",
+      tags: [{ name: "Examples" }],
       queue: {},
       flow: {
         tcp: {
-          host: '192.168.1.200',
-          port: 5600
+          host: "192.168.1.200",
+          port: 5600,
         },
       },
     },
   ],
-}
+};
 
 const storeACK: Route = {
-  kind: 'route', // required for strong typing
-  id: 'ID_3',
-  name: 'Example ACK Store Route',
-  tags: [{ name: 'Examples' }],
+  kind: "route", // required for strong typing
+  id: "ID_3",
+  name: "Example ACK Store Route",
+  tags: [{ name: "Examples" }],
   queue: {},
   flows: [
     {
-      kind: 'flow',
-      id: 'ID_4',
-      name: 'Example ACK Store Flow',
-      tags: [{ name: 'Examples' }],
+      kind: "flow",
+      id: "ID_4",
+      name: "Example ACK Store Flow",
+      tags: [{ name: "Examples" }],
       queue: {},
       flow: {
         store: {
@@ -130,19 +194,19 @@ const storeACK: Route = {
       },
     },
   ],
-}
+};
 
 const channel: ChannelConfig = {
-  name: 'Example Channel',
-  source: {
-
-  },
-  ingestion: [{
-    kind: 'ack',
-    ask: { organization: 'Example Org' }
-  }],
-  routes: [[sendMsg, storeACK]]
-}
+  name: "Example Channel",
+  source: {},
+  ingestion: [
+    {
+      kind: "ack",
+      ask: { organization: "Example Org" },
+    },
+  ],
+  routes: [[sendMsg, storeACK]],
+};
 ```
 
 The `routes` property in the `ChannelConfig` type takes a multidimensional array of `Route`s. This allows routes to be processed syncronously or asyncronously. Routes within the same inner array will be called sequentially. If a route sends to a tcp server, then the next route will be using the ACK returned by that server.
@@ -167,14 +231,13 @@ The `routes` property in the `ChannelConfig` type takes a multidimensional array
 - [send](#send)
 - [export](#export)
 
-
 ## name
 
-Call the `name` method to name the route 
+Call the `name` method to name the route
 
 ```typescript
 // example.ts (continued)
-route.name('A Unique Channel Name')
+route.name("A Unique Channel Name");
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -185,7 +248,7 @@ Call the `id` method to override the generated id given to the route. If not pro
 
 ```typescript
 // example.ts (continued)
-route.id(42)
+route.id(42);
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -196,16 +259,13 @@ Call the `filter` method to filter the message. See [Filter Flow](./filtering.md
 
 ```typescript
 // example.ts (continued)
-route.filter((msg) => msg.get('MSH-9.1') === "ADT")
+route.filter((msg) => msg.get("MSH-9.1") === "ADT");
 
 // alternatively you can use the long form get classes
-route.filter((msg) => 
-  msg
-    .getSegment('MSH')
-    .getField(9)
-    .getComponent(1)
-    .toString() === 'ADT'
-)
+route.filter(
+  (msg) =>
+    msg.getSegment("MSH").getField(9).getComponent(1).toString() === "ADT"
+);
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -216,7 +276,7 @@ Call the `transform` method to transform/modify the message. See [Transform Flow
 
 ```typescript
 // example.ts (continued)
-route.transform((msg) => msg.set('MSH-5'), 'Gofer')
+route.transform((msg) => msg.set("MSH-5"), "Gofer");
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -227,7 +287,7 @@ Call the `store` method to persist the message to a data store. See [Store Confi
 
 ```typescript
 // example.ts (continued)
-route.store({ file: {} })
+route.store({ file: {} });
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -238,13 +298,13 @@ Call the `setVar` method to set a variable value for the specific scope. The `va
 
 ```typescript
 // example.ts (continued)
-route.setVar('Msg', 'name', 'FirstName')
+route.setVar("Msg", "name", "FirstName");
 
 // you can extract the value from the message
-route.setVar('Channel', 'facility', (msg) => msg.get('MSH-3.1'))
+route.setVar("Channel", "facility", (msg) => msg.get("MSH-3.1"));
 
 // you can strictly specify the type of the value
-route.setVar<{ bar: string }>('Global', 'foo', { bar: 'baz' })
+route.setVar<{ bar: string }>("Global", "foo", { bar: "baz" });
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -255,7 +315,7 @@ Call the `setMsgVar` method to set a variable value for the Message scope. Later
 
 ```typescript
 // example.ts (continued)
-route.setMsgVar('name', 'FirstName')
+route.setMsgVar("name", "FirstName");
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -266,7 +326,7 @@ Call the `setMsgVar` method to set a variable value for the Message scope. Later
 
 ```typescript
 // example.ts (continued)
-route.setMsgVar('name', 'FirstName')
+route.setMsgVar("name", "FirstName");
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -277,7 +337,7 @@ Call the `setChannelVar` method to set a variable value for the Channel scope. L
 
 ```typescript
 // example.ts (continued)
-route.setChannelVar('facility', msg => msg.get('MSH-3.1'))
+route.setChannelVar("facility", (msg) => msg.get("MSH-3.1"));
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -288,7 +348,7 @@ Call the `setGlobalVar` method to set a variable value for the Global scope. Any
 
 ```typescript
 // example.ts (continued)
-route.setGlobalVar('foo', { bar: 'baz' })
+route.setGlobalVar("foo", { bar: "baz" });
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -303,7 +363,7 @@ Call the `getVar` method to get a previously set variable for the given scope by
 
 ```typescript
 // example.ts (continued)
-route.getVar('Msg', 'name', (name) => console.log(name))
+route.getVar("Msg", "name", (name) => console.log(name));
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -316,7 +376,7 @@ For example, you can use the value to transform the message
 
 ```typescript
 // example.ts (continued)
-route.getMsgVar<string>('name', (name, msg) => msg.set('PID-5.2', name))
+route.getMsgVar<string>("name", (name, msg) => msg.set("PID-5.2", name));
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -329,11 +389,10 @@ For example, you can use the value to transform the message
 
 ```typescript
 // example.ts (continued)
-route.getRouteVar<string>('name', (name, msg) => msg.set('PID-5.2', name))
+route.getRouteVar<string>("name", (name, msg) => msg.set("PID-5.2", name));
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
-
 
 ## getChannelVar
 
@@ -343,9 +402,9 @@ For example, you can use the value and the context to log a message
 
 ```typescript
 // example.ts (continued)
-route.getChannelVar<string>('facility', (facility, _, { logger }) => {
-  logger(`Received message from ${facility}`, 'info')
-})
+route.getChannelVar<string>("facility", (facility, _, { logger }) => {
+  logger(`Received message from ${facility}`, "info");
+});
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -358,7 +417,7 @@ For example, you can use the value and filter the message by returning false
 
 ```typescript
 // example.ts (continued)
-route.getGlobalVar<{ bar: string }>('foo', ({ bar }) => bar === 'foo')
+route.getGlobalVar<{ bar: string }>("foo", ({ bar }) => bar === "foo");
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_
@@ -367,23 +426,41 @@ _[Back to top](#developing-routes-with-oop-style)_
 
 Call the `send` method to configure a destination to send the message.
 
-Currently only TCP (MLLP) destinations are supported, but coming soon, Gofer Engine will also support ftp, sftp, http, https, and database direct queries/mutations.
+Currently only TCP (MLLP), HTTP, and HTTPS destinations are supported, but coming soon, Gofer Engine will also support ftp, sftp, and database direct queries/mutations.
 
-For example, you can send the message to an IP and port provided by your EHR
+For example, you can send the message via TCP to the IP and port provided by your EHR
 
 ```typescript
 // example.ts (continue)
-route.send({ tcp: { host: '192.168.1.200', port: 5700 } })
+route.send('tcp', "192.168.1.200", 5700);
 ```
 
 You can also use a function to extract this information from the message or context
 
 ```typescript
 // example.ts (continue)
-route.send({ tcp: {
-  host: (_msg, context) => context.getRouteVar<string>('host'),
-  port: (_msg, context) => context.getRouteVar<number>('port')
-} })
+route.send(
+  'tcp',
+  (_msg, context) => context.getRouteVar<string>("host"),
+  (_msg, context) => context.getRouteVar<number>("port"),
+);
+```
+
+Another example, you can send the message to an HTTPS endpoint with a self-signed certificate, and provide basic authorization.
+
+```typescript
+route.send(
+  'https',
+  {
+    host: 'ehr.example.com',
+    port: 443,
+    basicAuth: {
+      username: 'user',
+      password: 'pass',
+    },
+    rejectUnauthorized: false,
+  },
+)
 ```
 
 _[Back to top](#developing-routes-with-oop-style)_

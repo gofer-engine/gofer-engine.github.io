@@ -91,7 +91,7 @@ gofer.configs([channel])
 
 The above examples add a single channel that listens on `localhost` port `5500` via `tcp` for HL7 v2.x messages. It will reply with an acknowledgment message and write the message to a file in the default `./local` directory.
 
-See the [Developing Interface Channels in OOP style](./developing-interface-channels-in-oop.md) or the [Developing Interface Channels with Config Files]('./developing-interface-channels-with-configs.md) pages for more information on building and configuring channels.
+See the [Developing Interface Channels in OOP style](./developing-interface-channels-in-oop.md) or the [Developing Interface Channels with Config Files](./developing-interface-channels-with-configs.md) pages for more information on building and configuring channels.
 
 ### Running in Development
 

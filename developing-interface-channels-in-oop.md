@@ -47,21 +47,72 @@ The Gofer Engine class has methods to quickly and easily create and run channel 
 
 ## listen
 
-To begin a new channel, use the `listen` method. This method accepts three arguments:
+To begin a new channel, use the `listen` method. This method accepts three arguments for TCP listeners:
 
-- `method`: Currently only supports `"tcp"`
+- `method`: `"tcp"`
 - `host`: A `string` for the ip or hostname on which to listen
 - `port`: The `number` of the port to listen on.
 
-_**Note**: Currently only TCP listeners are supported. In a future release, there will be additional methods to listen, read, and accept messages._
+Or two arguments for HTTP and HTTPS:
+
+- `method`: `"http"`
+- `options`: `HTTPConfig<'I'>`
+
+- `method`: `"https"`
+- `options`: `HTTPSConfig<'I'>`
+
+See [source](./developing-interface-channels-with-configs.md#source) for typings of `HTTPConfig<'I'>` and `HTPPSConfig<'I'>`
+
+_**Note**: Currently only TCP, HTTP, and HTTPS listeners are supported. In a future release, there will be additional methods to listen, read, and accept messages._
 
 ```typescript
-// example.ts
+// example.ts with TCP listener
 import gofer,  { ChannelConfig } from '@gofer-engine/engine'
 
 const ingest = gofer.listen('tcp', 'localhost', 5501)
 // we will continue building upon this snippet
 ```
+
+```typescript
+// example.ts with HTTP listener
+import gofer,  { ChannelConfig } from '@gofer-engine/engine'
+
+const ingest = gofer.listen('http', {
+  host: '127.0.0.1',
+  port: 8100,
+  method: 'POST',
+  basicAuth: {
+    username: 'user',
+    password: 'pass',
+  },
+})
+// we will continue building upon this snippet
+```
+
+```typescript
+// example.ts with HTTPS listener
+import gofer,  { ChannelConfig } from '@gofer-engine/engine'
+import fs from 'fs'
+
+// could use .env variables instead
+const SSL_KEY = fs.readFileSync('yourpath/key.pem')
+const SSL_CERT = fs.readFileSync('yourpath/cert.pem')
+
+const ingest = gofer.listen('tcp', {
+  host: '127.0.0.1',
+  port: 8200,
+  method: 'POST',
+  basicAuth: {
+    username: 'user',
+    password: 'pass',
+  },
+  key: SSL_KEY,
+  cert: SSL_CERT,
+})
+// we will continue building upon this snippet
+```
+
+
 
 The `listen` method returns an [`IngestionClass`](#ingestionclass).
 

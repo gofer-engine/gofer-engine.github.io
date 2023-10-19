@@ -28,6 +28,6 @@ The variable getters and setters can be passed a generic type to strongly type t
 
 The `set` functions will create the variable if it does not exist, and the `get` functions will return `undefined` if the variable does not exist.
 
-The `filtered` property of the `AckContext` is a boolean that is set to `true` if the message was filtered. This can be used to determine if the message was filtered or not in the ingestion flow before the acknowledgment config. _Note, this is ignored if a queue is used in the TCP Source._
+The `filtered` property of the `AckContext` is a boolean that is set to `true` if the message was filtered. This can be used to determine if the message was filtered or not in the ingestion flow before the acknowledgment config. _Note, this is ignored if a queue is used in the Source._
 
 See [Queuing Workflows](./queuing.md) for more information on Queu Configs.

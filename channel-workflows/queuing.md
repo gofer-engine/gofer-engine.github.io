@@ -4,9 +4,9 @@
 
 Queuing is useful when you need to allow retries or throttle the number of messages being processed at a time. The Queue can be configured in three different places in a channel config.
 
-1. In the TCP Source. This will queue all messages coming in from the TCP source. This will allow for a quick ack to the sender that the message was queued without having to wait for the ingestion flow to process the messages up to an ack flow. Ack flows in the ingestion array will not be sent back to the original sender when using a queue.
+1. In the Source. This will queue all messages coming in from the source. This will allow for a quick ack to the sender that the message was queued without having to wait for the ingestion flow to process the messages up to an ack flow. Ack flows in the ingestion array will not be sent back to the original sender when using a queue.
 2. In the Route. This will queue the message before it is sent to the flows of the route. This could be useful if you want to throttle the number of messages being sent to a specific route or if a transformer, filter, store, or destination flow is problematic to allow for retries of the entire route again.
-3. In TCP RouteFlows. Typing currently allows queues to be added to any RouteFlow, but only TCP RouteFlows will queue the messages. This is useful if you want to throttle the number of messages being sent to a specific destination or to retry the TCP connection again in case of downtime or other transport failure.
+3. In RouteFlows. Typing currently allows queues to be added to any RouteFlow, but only TCP RouteFlows will queue the messages. This is useful if you want to throttle the number of messages being sent to a specific destination or to retry the TCP connection again in case of downtime or other transport failure.
 
 _NOTE_: TCP destinations that return a NACK do not currently retry the message. This could be added in the future if there is a need for it. In most of the systems I have worked with, the NACK is a permanent failure and the message should be discarded.
 
@@ -24,7 +24,7 @@ interface QueueConfig {
   rotate?: boolean // defaults to false
   verbose?: boolean // defaults to false
   store: 'file' | 'memory'
-  strinfigy?: (msg: Msg) => string // defaults to (msg) => msg.toString()
+  stringify?: (msg: Msg) => string // defaults to (msg) => msg.toString()
   parse?: (msg: string) => Msg // defaults to (msg) => new Msg(msg)
 }
 ```

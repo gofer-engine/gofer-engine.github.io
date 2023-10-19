@@ -117,12 +117,14 @@ _[Back to top](#developing-interface-channels-with-configs)_
 
 ## source
 
-The `source` is required and is the source of the messages to process. Currently, the only supported source is TCP Listener for HL7 messages. The interface `Connection<'I'>` is computed to:
+The `source` is required and is the source of the messages to process. Currently, the only supported source is TCP Listener for HL7 messages. The interface `Connection<'I'>` is computed to one of the following methods:
+
+### TCP Connection
 
 ```typescript
 interface Connection {
   kind: 'tcp'
-  tcp: {
+  tcp: { // aka: TcpConfig<'I'>
     host: string
     port: number
     // Start of Message character. Defaults to '\x0b'
@@ -135,8 +137,70 @@ interface Connection {
   queue?: QueueConfig
 }
 ```
+### HTTP Connection
 
-Future plans include support for HL7 over HTTP, HL7 reading from files in a directory, and HL7 reading from a database. Eventually, I would like to support other message formats such as FHIR, CDA, CSV, PSV, etc.,
+```typescript
+interface Connection {
+  kind: 'http';
+  http: { // aka: HTTPConfig<'I'>
+    // The IP or domain name used to bind the listener
+    host: string;
+    port: number;
+    // method defaults to 'POST'
+    method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+    path?: string;
+    // require basic authentication
+    basicAuth?: {
+      username: string;
+      password: string;
+    };
+  };
+  queue?: QueueConfig;
+}
+```
+
+### HTTPS Connection
+
+```typescript
+interface Connection {
+  kind: 'https';
+  https: { // aka: HTTPSConfig<'I'>
+    // The IP or domain name used to bind the listener
+    host: string;
+    port: number;
+    // method defaults to 'POST'
+    method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+    path?: string;
+    // require basic authentication
+    basicAuth?: {
+      username: string;
+      password: string;
+    };
+    // props for cert/ssl support from tls.connect
+    ca?: string | string[] | Buffer | Buffer[];
+    cert?: string | string[] | Buffer | Buffer[];
+    ciphers?: string | string[] | Buffer | Buffer[];
+    clientCertEngine?: string;
+    crl?: string | string[] | Buffer | Buffer[];
+    dhparam?: string | Buffer;
+    ecdhCurve?: string;
+    honorCipherOrder?: boolean;
+    key?: string | string[] | Buffer | Buffer[];
+    passphrase?: string;
+    pfx: string | string[] | Buffer | Buffer[] | { buf: string | Buffer; passphrase?: string }[];
+    secureOptions?: number;
+    secureProtocol?: string;
+    sessionIdContext?: string;
+    rejectUnauthorized?: boolean;
+    servername?: string
+  };
+  queue?: QueueConfig;
+}
+```
+
+For more information on the props for cert/ssl support from tls.connect see: [Nodejs.org tls.connect](https://nodejs.org/api/tls.html#tlsconnectoptions-callback)
+
+Future plans include support for HL7 reading from files in a directory, and HL7 reading from a database. Eventually, I would like to support other message formats such as FHIR, CDA, CSV, PSV, etc.,
 
 More information on the [`QueueConfig`](./channel-workflows/queuing.md) doc page.
 
