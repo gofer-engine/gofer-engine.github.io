@@ -32,9 +32,6 @@ Here is a very simplified example of using Gofer Engine to create a messenger fu
 ```ts
 import gofer from `@gofer-engine/engine`;
 
-const EHR_HL7_IP = '192.168.1.200';
-const EHR_HL7_PORT = 5600
-
 const [messenger, _id] = gofer.messenger((route) => {
   return route
     .store({
@@ -44,12 +41,12 @@ const [messenger, _id] = gofer.messenger((route) => {
         table: 'example'
       }
     })
-    .send('tcp', '192.168.1.200', 5600)
+    .send('tcp', '192.168.1.200', 5600);
 })
 
 // use somewhere in script to send message such as
 const main = async () => {
-  messenger(`MSH|^~\\&|||||199912271408||ADT^A04|123|D|2.5\nEVN|A04|199912271408|||\nPID|1||1234||DOE^JOHN|||M`)
+  messenger(`MSH|^~\\&|||||199912271408||ADT^A04|123|D|2.5\rEVN|A04|199912271408|||\rPID|1||1234||DOE^JOHN|||M`)
 }
 
 main();
