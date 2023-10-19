@@ -270,24 +270,59 @@ type RouteFlow =
   | FilterFlow
   | TransformFlow
   | StoreConfig
-  | {
-      kind: 'tcp'
-      tcp: {
-        host: string
-        port: number
-        // Start of Message character. Defaults to '\x0b'
-        SoM?: string
-        // End of Message character. Defaults to '\x1c'
-        EoM?: string
-        // End of Transmission character. Defaults to '\r'
-        CR?: string
-        // response timeout in milliseconds. NOTE: not yet implemented
-        responseTimeout?: number | false
-      }
-    }
+  | { kind: 'tcp'; tcp: TcpConfig }
+  | { kind: 'http'; tcp: HTTPConfig }
+  | { kind: 'https'; tcp: HTPPSConfig }
+
+interface TcpConfig = {
+  host: string
+  port: number
+  // Start of Message character. Defaults to '\x0b'
+  SoM?: string
+  // End of Message character. Defaults to '\x1c'
+  EoM?: string
+  // End of Transmission character. Defaults to '\r'
+  CR?: string
+  // response timeout in milliseconds. NOTE: not yet implemented
+  responseTimeout?: number | false
+}
+
+interface HTTPConfig = {
+  // The IP or domain name used to bind the listener
+  host: string;
+  port: number;
+  // method defaults to 'POST'
+  method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+  path?: string;
+  // require basic authentication
+  basicAuth?: {
+    username: string;
+    password: string;
+  };
+}
+
+interface HTTPSConfig = {
+  // props for cert/ssl support from tls.connect
+  ca?: string | string[] | Buffer | Buffer[];
+  cert?: string | string[] | Buffer | Buffer[];
+  ciphers?: string | string[] | Buffer | Buffer[];
+  clientCertEngine?: string;
+  crl?: string | string[] | Buffer | Buffer[];
+  dhparam?: string | Buffer;
+  ecdhCurve?: string;
+  honorCipherOrder?: boolean;
+  key?: string | string[] | Buffer | Buffer[];
+  passphrase?: string;
+  pfx: string | string[] | Buffer | Buffer[] | { buf: string | Buffer; passphrase?: string }[];
+  secureOptions?: number;
+  secureProtocol?: string;
+  sessionIdContext?: string;
+  rejectUnauthorized?: boolean;
+  servername?: string
+}
 ```
 
-Currently, only TCP remote destinations are supported.
+Currently, only TCP, HTTP, and HTTPS remote destinations are supported.
 
 See [FilterFlow](./channel-workflows/filtering.md)
 See [TransformFlow](./channel-workflows/transforming.md)
